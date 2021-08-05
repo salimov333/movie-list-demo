@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Movie List DOM</title>
+  <style>
+
+    /* what an amazing style! */
+
+    ul#movies {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    ul#movies > li {
+      display: flex;
+      justify-content: space-between;
+
+      width: 400px;
+      margin: 3px 0;
+      padding: 10px;
+      border-radius: 10px;
+      border: 2px solid #aaa;
+      background-color: #ccc;
+      font-size: 1.3rem;
+    }
+    ul#movies > li:hover {
+      background-color: #aaa;
+      color: white;
+      font-weight: bold;
+    }
+
+    button#btn-add {
+      padding: 5px 30px;
+      border-radius: 10px;
+      border: none;
+      background-color: mediumslateblue;
+      font-size: 1.2rem;  
+      color: white;
+      cursor: pointer;
+    }
+    
+
+  </style>
+  <script>
+
+    // Movies & Series data
+    let arrMovies = []
+
+    // convert Array to DOM list
+    const printMovieListToDom = () => {}
+
+
+    // ARRAY operations
+
+    // ADD
+    const addMovie = () => {
+      console.log("Add movie called...")
+    }
+
+    // EDIT
+    const editMovie = (idToEdit) => {
+      console.log(`Editing movie ${idToEdit}...`)
+    }
+
+    // DELETE
+    const deleteMovie = (idToDelete) => {
+      console.log(`Deleting movie ${idToDelete}...`)
+    }
+
+  </script>
+</head>
+<body>
+  
+  <h2>My Movie List</h2>
+  <ul id="movies">
+    <li>
+      <span>Love Death & Robots</span>
+      <div class="btn-actions">
+        <button>&#x270E;</button> 
+        <button>X</button> 
+      </div>
+    </li>
+    <li>
+      <span>Happy</span>
+      <div class="btn-actions">
+        <button>&#x270E;</button> 
+        <button>X</button> 
+      </div>
+    </li>
+    <li>
+      <span>3 Percent</span>
+      <div class="btn-actions">
+        <button>&#x270E;</button> 
+        <button>X</button> 
+      </div>
+    </li>
+  </ul>
+
+  <button id="btn-add" onclick="addMovie()" >ADD MOVIE</button>
+
+  <script>
+    // TODO: write movies to DOM
+  </script>
+
+</body>
+</html>
