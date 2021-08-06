@@ -48,9 +48,9 @@
 
     // Movies & Series data
     let arrMovies = [
-      { title: "Love Death & Robots" },
-      { title: "Happy" },
-      { title: "3 Percent" }
+      { title: "Love Death & Robots", id: "1" },
+      { title: "Happy", id: "2" },
+      { title: "3 Percent", id: "3" }
     ]
 
     // convert Array to DOM list
@@ -62,16 +62,71 @@
     // ADD
     const addMovie = () => {
       console.log("Add movie called...")
+
+      // RUFE POPUP AUF (einfaches Popup) => prompt
+      // FRAGE MOVIE TITEL VON USER AB
+      const movieTitleNew = prompt("Neuen Movie Titel, buddhy, jetzt hier: ")
+      
+      if(!movieTitleNew) return // one movie titel nix los! 
+
+      // ERSTELLE NEUES MOVIE OBJEKT
+      // { title: "Happy" }
+      const movieNew = { 
+        title: movieTitleNew,
+        id: Date.now().toString() //=> 123564728191
+      }  // string => objekt
+
+      console.log(movieNew)
+
+      // FÜGE NEUES MOVIE OBJEKT DEM ARRAY HINZU
+      arrMovies.push( movieNew )
+
+      console.log( arrMovies )
+
+      // DOM UPDATEN
+      printMovieArrayToFuckingDOM()
+
     }
 
     // EDIT
     const editMovie = (idToEdit) => {
       console.log(`Editing movie ${idToEdit}...`)
+
+      // FINDE OBJEKT IM ARRAY MIT DIESER ID
+      const movieFound = arrMovies.find( movie => movie.id == idToEdit )
+
+      // OBJEKT GEFUNDEN ? => TITEL UPDATEN
+      if(!movieFound) return
+
+      // NIMM NEUEN TITEL VOM USER AUF
+      const movieTitleNew = prompt("Gib mir den neuen Titel, man!", movieFound.title)
+
+      // !movieTitleNew && return
+      if(!movieTitleNew) return // one movie titel nix los! 
+
+      movieFound.title = movieTitleNew
+
+      // DOM UPDATEN
+      printMovieArrayToFuckingDOM()
     }
 
     // DELETE
     const deleteMovie = (idToDelete) => {
       console.log(`Deleting movie ${idToDelete}...`)
+
+      // Method 1: Find object in array by index & splice it away!
+      // arrMovies.findIndex()
+      // arrMovies.splice()
+
+      // Method 2: Use filter method to delete items
+      const arrMoviesKeep = arrMovies.filter( movie => movie.id != idToDelete ) // => item mit id "idToDelete" (=> 3) => filter mir das RAUS! 
+
+      console.log(arrMoviesKeep)
+
+      arrMovies = arrMoviesKeep // overwrite original array
+
+      // DOM UPDATEN
+      printMovieArrayToFuckingDOM()
     }
 
   </script>
@@ -79,17 +134,7 @@
 <body>
   
   <h2>My Movie List</h2>
-  <ul id="movies">
-    <!--  TEMPLATE => copy with Javascript -->
-    <!-- <li>
-      <span>Love Death & Robots</span>
-      <div class="btn-actions">
-        <button>&#x270E;</button> 
-        <button>X</button> 
-      </div>
-    </li> -->
-    <!-- END OF TEMPLATE -->
-  </ul>
+  <ul id="movies"></ul>
 
   <button id="btn-add" onclick="addMovie()" >ADD MOVIE</button>
 
@@ -110,14 +155,16 @@
       // FÜR JEDEN FILM WOLLEN WIR EIN LI GENERIEREN
       const arrMoviesLi = arrMovies.map((movie) => {
         // map function always returns the UPDATED object 
-        return `<li>${movie.title}</li>`
+        return `<li>
+          <span>${movie.title}</span>
+          <div class="btn-actions">
+            <button onclick='editMovie(${movie.id})' >&#x270E;</button> 
+            <button onclick='deleteMovie(${movie.id})' >X</button>
+          </div>
+        </li>`
       }) // map soll das FORMAT eines Arrays in ein anderes Format umwandeln
 
-      console.log( arrMoviesLi )
-
       const strLIs = arrMoviesLi.join("")
-
-      console.log( strLIs )
 
       // '<li>Love, Death & Robots</li><li>Happy</li><li>3 Percent</li>'
       ulMovies.innerHTML = strLIs
