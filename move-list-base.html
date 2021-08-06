@@ -47,7 +47,11 @@
   <script>
 
     // Movies & Series data
-    let arrMovies = []
+    let arrMovies = [
+      { title: "Love Death & Robots" },
+      { title: "Happy" },
+      { title: "3 Percent" }
+    ]
 
     // convert Array to DOM list
     const printMovieListToDom = () => {}
@@ -76,33 +80,54 @@
   
   <h2>My Movie List</h2>
   <ul id="movies">
-    <li>
+    <!--  TEMPLATE => copy with Javascript -->
+    <!-- <li>
       <span>Love Death & Robots</span>
       <div class="btn-actions">
         <button>&#x270E;</button> 
         <button>X</button> 
       </div>
-    </li>
-    <li>
-      <span>Happy</span>
-      <div class="btn-actions">
-        <button>&#x270E;</button> 
-        <button>X</button> 
-      </div>
-    </li>
-    <li>
-      <span>3 Percent</span>
-      <div class="btn-actions">
-        <button>&#x270E;</button> 
-        <button>X</button> 
-      </div>
-    </li>
+    </li> -->
+    <!-- END OF TEMPLATE -->
   </ul>
 
   <button id="btn-add" onclick="addMovie()" >ADD MOVIE</button>
 
   <script>
     // TODO: write movies to DOM
+
+    // FÜR JEDEN FILM WILL ICH EIN LI GENERIEREN
+    // JEDES LI HAT DIESELBE STRUKTUR (=HTML TAGS)
+    // JEDES LI HAT ANDERE DATEN !
+
+    // CLEAR ALL IN UL AND RE-CREATE!
+
+    const printMovieArrayToFuckingDOM = () => {
+      
+      // UL selektiert
+      const ulMovies = document.querySelector("#movies")
+
+      // FÜR JEDEN FILM WOLLEN WIR EIN LI GENERIEREN
+      const arrMoviesLi = arrMovies.map((movie) => {
+        // map function always returns the UPDATED object 
+        return `<li>${movie.title}</li>`
+      }) // map soll das FORMAT eines Arrays in ein anderes Format umwandeln
+
+      console.log( arrMoviesLi )
+
+      const strLIs = arrMoviesLi.join("")
+
+      console.log( strLIs )
+
+      // '<li>Love, Death & Robots</li><li>Happy</li><li>3 Percent</li>'
+      ulMovies.innerHTML = strLIs
+
+    }
+
+
+    // convert array into UL List on load
+    printMovieArrayToFuckingDOM()
+
   </script>
 
 </body>
