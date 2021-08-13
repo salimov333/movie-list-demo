@@ -78,9 +78,8 @@ function App() {
   };
 
   // CONVERT ARRAY OF MOVIES TO JSX
-  const jsxMovies = arrMovies.map((movie) => {
+  const jsxMovies = arrMovies.map((movie) => (
     // map function always returns the UPDATED object
-    return (
       <li>
         <span>{ movie.title }</span>
         <div className="btn-actions">
@@ -88,8 +87,8 @@ function App() {
           <button onClick={ () => deleteMovie(movie.id) } >X</button>
         </div>
       </li>
-    );
-  }); // map soll das FORMAT eines Arrays in ein anderes Format umwandeln
+    )
+  ); // map soll das FORMAT eines Arrays in ein anderes Format umwandeln
 
   // RENDERING => FILL DATA INTO HTML TEMPLATE
   // JSX ONLY => no functions!!!!
