@@ -1,0 +1,53 @@
+.App {
+  text-align: center;
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+/* what an amazing style! */
+
+ul#movies {
+  list-style-type: none;
+  padding: 0;
+}
+
+ul#movies > li {
+  display: flex;
+  justify-content: space-between;
+
+  width: 400px;
+  margin: 3px 0;
+  padding: 10px;
+  border-radius: 10px;
+  border: 2px solid #aaa;
+  background-color: #ccc;
+  font-size: 1.3rem;
+}
+ul#movies > li:hover {
+  background-color: #aaa;
+  color: white;
+  font-weight: bold;
+}
+
+button#btn-add {
+  padding: 5px 30px;
+  border-radius: 10px;
+  border: none;
+  background-color: mediumslateblue;
+  font-size: 1.2rem;
+  color: white;
+  cursor: pointer;
+}

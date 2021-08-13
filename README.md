@@ -7,7 +7,7 @@ We do this with the following steps:
 - Step 1: Outsource hardcoded list data into an array of objects
 - Step 2: Generate DOM List dynamically
 - Step 3: Create event listeners for changing the data in the array
-- Step 3: Transfer all data changes to the DOM
+- Step 4: Transfer all data changes to the DOM
 
 And finally we will have converted this hardcoded UI into a dynamic, data-driven UI. 
 
