@@ -4,6 +4,11 @@ import { useState } from 'react'
 function App() {
   // DATEN FIRST
 
+  // useState: function that takes "normal" data as argument - and makes STATE DATA out of it!
+  // => kreiert Paar aus STATE variable und SETTER FUNCTION für den State
+  // => wenn wir SETTER aufrufen, triggert wir ein Signal an React, dass sich STATE geändert hat
+  // => das STATE UPDATE ist das Signal für React, den DOM zu aktualisieren (=Re-Rendering)
+
   // Movies & Series data
   let [arrMovies, setMovies] = useState( [
     { title: 'Love Death & Robots', id: '1' },
@@ -55,9 +60,13 @@ function App() {
     // NIMM NEUEN TITEL VOM USER AUF
     const movieTitleNew = prompt('Gib mir den neuen Titel, man!', movieFound.title);
 
-    if (!movieTitleNew) return; // one movie titel nix los!
+    if (!movieTitleNew) return; // ohne movie titel nix los!
 
-    movieFound.title = movieTitleNew;
+    // => das hier funktioniert nicht!!! Wir können nie die Original-Daten DIREKT ändern!
+    // => wir müssen also stattdessen auch hier eine KOPIE des Arrays erzeugen, 
+    // => das Objekt manipulieren und am Ende die SETTER Funktion aufrufen
+    // => kommt nächste Woche :)
+    movieFound.title = movieTitleNew; 
   };
 
   // DELETE
