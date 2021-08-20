@@ -1,12 +1,8 @@
 {
   "movies": [
     {
-      "title": "Love Death & Robots",
+      "title": "Love, Death & JavaScript",
       "id": "1"
-    },
-    {
-      "title": "Happy",
-      "id": "2"
     },
     {
       "title": "3 Percent",
@@ -15,6 +11,10 @@
     {
       "title": "Mindhunter",
       "id": "6lc5rW0"
+    },
+    {
+      "title": "Greenland",
+      "id": "oAU0OPP"
     }
   ]
 }

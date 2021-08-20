@@ -3,13 +3,10 @@ import { useState, useEffect } from 'react' // HOOKS import
 
 const log = console.log
 
+const API_URL = "http://localhost:4000/movies"
+
 function App() {
   // DATEN FIRST
-
-  // useState: function that takes "normal" data as argument - and makes STATE DATA out of it!
-  // => kreiert Paar aus STATE variable und SETTER FUNCTION für den State
-  // => wenn wir SETTER aufrufen, triggert wir ein Signal an React, dass sich STATE geändert hat
-  // => das STATE UPDATE ist das Signal für React, den DOM zu aktualisieren (=Re-Rendering)
 
   // Movies & Series data
   let [arrMovies, setMovies] = useState( [] ); // => DAS IST STATE !!!!!
@@ -19,7 +16,6 @@ function App() {
   useEffect( () => {
     
     // DATEN von API holen
-    const API_URL = "http://localhost:4000/movies"
 
     fetch(API_URL)
     .then(response => response.json())
@@ -36,11 +32,6 @@ function App() {
 
   // DATA operations
 
-  // => existiert nicht in functional components, nur in class components!
-  // useState => bringt uns State in eine Functional component
-  // componentDidMount() => HOOK => Hooks bringen uns Features in die Functional Component
-  // componentDidMount() => useEffect
-
   // ADD
   const addMovie = () => {
     console.log('Add movie called...');
@@ -55,19 +46,27 @@ function App() {
     // { title: "Happy" }
     const movieNew = {
       title: movieTitleNew,
-      id: Date.now().toString() //=> 123564728191
+      //id: Date.now().toString() //=> 123564728191
     }; // string => objekt
 
-    console.log(movieNew);
+    // API => STATE => DOM
+    fetch(API_URL, {
+      method: "POST", // create NEW item at API
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify( movieNew )
+    })
+    .then(response => response.json())
+    // API CALL was SUCCESSFUL
+    .then(movieNewApi => {
+      
+      log(movieNewApi);
 
-    // FÜGE NEUES MOVIE OBJEKT DEM ARRAY HINZU
-    
-    // arrMovies.push( movieNew ); => DIREKTE Manipulation des Arrays triggert kein  
-    
-    const arrMoviesNew =  [...arrMovies, movieNew] // merge COPY des Original Array mit neuem Movie 
-    setMovies( arrMoviesNew ) // state update => THIS triggers DOM update
+      // FÜGE NEUES MOVIE OBJEKT DEM ARRAY HINZU
+      const arrMoviesNew =  [...arrMovies, movieNew] // merge COPY des Original Array mit neuem Movie 
+      setMovies( arrMoviesNew ) // state update => THIS triggers DOM update
+    })
 
-    console.log(arrMovies);
+
   };
 
   // EDIT
@@ -85,34 +84,65 @@ function App() {
 
     if (!movieTitleNew) return; // ohne movie titel nix los!
 
-    // => das hier funktioniert nicht!!! Wir können nie die Original-Daten DIREKT ändern!
-    // => wir müssen also stattdessen auch hier eine KOPIE des Arrays erzeugen, 
-    // => das Objekt manipulieren und am Ende die SETTER Funktion aufrufen
-    // => kommt nächste Woche :)
-    movieFound.title = movieTitleNew; 
+    // { title: "<title", id: 12345 }
+
+    // API updaten
+
+    const apiUpdateURL = `${API_URL}/${idToEdit}`
+
+    log( apiUpdateURL )
+
+    // UPDATE CHAIN: => API => STATE => DOM 
+
+    // UPDATE DATA IN API with PUT or PATCH
+    fetch(apiUpdateURL, {
+      method: "PUT",
+      headers: { 'Content-Type': "application/json" },
+      body: JSON.stringify( { ...movieFound, title: movieTitleNew } )
+    })
+    .then(response => response.json())
+
+    // API changes was successful!! => update STATE too => update DOM
+    .then(movieUpdatedApi => {
+      log( movieUpdatedApi )
+
+      // UPDATE Movie in State
+      const moviesUpdated = arrMovies.map(movie => {
+        // movie to update found?
+        return (movie.id === idToEdit) ? { ...movie, title: movieTitleNew } : movie
+      })
+  
+      setMovies( moviesUpdated )
+    })
+
+
   };
 
   // DELETE
   const deleteMovie = (idToDelete) => {
     console.log(`Deleting movie ${idToDelete}...`);
 
-    // Method 1: Find object in array by index & splice it away!
-    // arrMovies.findIndex()
-    // arrMovies.splice()
+    fetch(`${API_URL}/${idToDelete}`, {
+      method: "DELETE"
+    }) // => http://localhost:4000/movies/:id 
+    .then(response => response.json())
+    // API CALL successful => update local state
+    .then(movieDeletedApi => {
+      log( movieDeletedApi )
 
-    // Method 2: Use filter method to delete items
-    const arrMoviesKeep = arrMovies.filter((movie) => movie.id != idToDelete); // => item mit id "idToDelete" (=> 3) => filter mir das RAUS!
+      // Use filter method to delete items
+      const arrMoviesKeep = arrMovies.filter((movie) => movie.id != idToDelete); // => item mit id "idToDelete" (=> 3) => filter mir das RAUS!
+      // arrMovies = arrMoviesKeep; // overwrite original array
+      setMovies( arrMoviesKeep ) // update STATE => that triggers DOM update
 
-    console.log(arrMoviesKeep);
+    })
 
-    // arrMovies = arrMoviesKeep; // overwrite original array
-    setMovies( arrMoviesKeep ) // update STATE => that triggers DOM update
   };
 
   // CONVERT ARRAY OF MOVIES TO JSX
   const jsxMovies = arrMovies.map((movie) => (
     // map function always returns the UPDATED object
-      <li>
+      <li key={ movie.id }>
         <span>{ movie.title }</span>
         <div className="btn-actions">
           <button onClick={ () => editMovie(movie.id) }>&#x270E;</button>
