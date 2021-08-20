@@ -1,6 +1,11 @@
-# Getting Started with Create React App
+# React Movie List mit API
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Um die Dummy API zu starten:
+
+* Führe `npm run api` aus, um die API zu starten
+* Öffne ein zweites Terminal
+* Starte hier React `npm start`
+* Lade React im Browser neu => die Filme sollten angezeigt werden
 
 ## Available Scripts
 
