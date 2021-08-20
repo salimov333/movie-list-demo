@@ -1,5 +1,7 @@
 import './App.css';
-import { useState } from 'react'
+import { useState, useEffect } from 'react' // HOOKS import
+
+const log = console.log
 
 function App() {
   // DATEN FIRST
@@ -10,13 +12,34 @@ function App() {
   // => das STATE UPDATE ist das Signal für React, den DOM zu aktualisieren (=Re-Rendering)
 
   // Movies & Series data
-  let [arrMovies, setMovies] = useState( [
-    { title: 'Love Death & Robots', id: '1' },
-    { title: 'Happy', id: '2' },
-    { title: '3 Percent', id: '3' }
-  ] ); // => DAS IST STATE !!!!!
+  let [arrMovies, setMovies] = useState( [] ); // => DAS IST STATE !!!!!
+
+  // initiale DATEN zu laden
+  // AFTER first render
+  useEffect( () => {
+    
+    // DATEN von API holen
+    const API_URL = "http://localhost:4000/movies"
+
+    fetch(API_URL)
+    .then(response => response.json())
+    .then(moviesApi => {
+      log( moviesApi )
+
+      // arrMovies = movies => DONT DO THIS SHIT!!!
+      setMovies( moviesApi ) // overwrite 
+
+    })
+
+
+  }, []) // = componentDidMount
 
   // DATA operations
+
+  // => existiert nicht in functional components, nur in class components!
+  // useState => bringt uns State in eine Functional component
+  // componentDidMount() => HOOK => Hooks bringen uns Features in die Functional Component
+  // componentDidMount() => useEffect
 
   // ADD
   const addMovie = () => {
@@ -105,7 +128,7 @@ function App() {
     <div className="App">
       <header className="App-header">
         <h2>My Movie List</h2>
-        <ul id="movies">{jsxMovies}</ul>
+        <ul id="movies">{ jsxMovies }</ul>
         <button id="btn-add" onClick={ addMovie }>
           ADD MOVIE
         </button>
