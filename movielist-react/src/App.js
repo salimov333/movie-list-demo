@@ -1,19 +1,21 @@
 import './App.css';
-import { useState, useEffect } from 'react' // HOOKS import
+import { Component } from 'react' // HOOKS import
 
 const log = console.log
 
 const API_URL = "http://localhost:4000/movies"
 
-function App() {
+class App extends Component {
   // DATEN FIRST
 
   // Movies & Series data
-  let [arrMovies, setMovies] = useState( [] ); // => DAS IST STATE !!!!!
+  state = {
+    arrMovies: []
+  }
 
-  // initiale DATEN zu laden
   // AFTER first render
-  useEffect( () => {
+  // initiale DATEN laden
+  componentDidMount() {
     
     // DATEN von API holen
 
@@ -23,17 +25,16 @@ function App() {
       log( moviesApi )
 
       // arrMovies = movies => DONT DO THIS SHIT!!!
-      setMovies( moviesApi ) // overwrite 
+      this.setState( { arrMovies: moviesApi } ) // overwrite 
 
     })
 
-
-  }, []) // = componentDidMount
+  }
 
   // DATA operations
 
   // ADD
-  const addMovie = () => {
+  addMovie = () => {
     console.log('Add movie called...');
 
     // RUFE POPUP AUF (einfaches Popup) => prompt
@@ -62,19 +63,19 @@ function App() {
       log(movieNewApi);
 
       // FÜGE NEUES MOVIE OBJEKT DEM ARRAY HINZU
-      const arrMoviesNew =  [...arrMovies, movieNew] // merge COPY des Original Array mit neuem Movie 
-      setMovies( arrMoviesNew ) // state update => THIS triggers DOM update
+      const arrMoviesNew =  [...this.state.arrMovies, movieNewApi] // merge COPY des Original Array mit neuem Movie 
+      this.setState( { arrMovies: arrMoviesNew } ) // state update => THIS triggers DOM update
     })
 
 
   };
 
   // EDIT
-  const editMovie = (idToEdit) => {
+  editMovie = (idToEdit) => {
     console.log(`Editing movie ${idToEdit}...`);
 
     // FINDE OBJEKT IM ARRAY MIT DIESER ID
-    const movieFound = arrMovies.find((movie) => movie.id == idToEdit);
+    const movieFound = this.state.arrMovies.find((movie) => movie.id == idToEdit);
 
     // OBJEKT GEFUNDEN ? => TITEL UPDATEN
     if (!movieFound) return;
@@ -107,19 +108,19 @@ function App() {
       log( movieUpdatedApi )
 
       // UPDATE Movie in State
-      const moviesUpdated = arrMovies.map(movie => {
+      const moviesUpdated = this.state.arrMovies.map(movie => {
         // movie to update found?
         return (movie.id === idToEdit) ? { ...movie, title: movieTitleNew } : movie
       })
   
-      setMovies( moviesUpdated )
+      this.setState( { arrMovies: moviesUpdated } )
     })
 
 
   };
 
   // DELETE
-  const deleteMovie = (idToDelete) => {
+  deleteMovie = (idToDelete) => {
     console.log(`Deleting movie ${idToDelete}...`);
 
     fetch(`${API_URL}/${idToDelete}`, {
@@ -131,40 +132,45 @@ function App() {
       log( movieDeletedApi )
 
       // Use filter method to delete items
-      const arrMoviesKeep = arrMovies.filter((movie) => movie.id != idToDelete); // => item mit id "idToDelete" (=> 3) => filter mir das RAUS!
+      const arrMoviesKeep = this.state.arrMovies.filter((movie) => movie.id != idToDelete); // => item mit id "idToDelete" (=> 3) => filter mir das RAUS!
       // arrMovies = arrMoviesKeep; // overwrite original array
-      setMovies( arrMoviesKeep ) // update STATE => that triggers DOM update
+      this.setState( { arrMovies: arrMoviesKeep } ) // update STATE => that triggers DOM update
 
     })
 
   };
 
-  // CONVERT ARRAY OF MOVIES TO JSX
-  const jsxMovies = arrMovies.map((movie) => (
-    // map function always returns the UPDATED object
-      <li key={ movie.id }>
-        <span>{ movie.title }</span>
-        <div className="btn-actions">
-          <button onClick={ () => editMovie(movie.id) }>&#x270E;</button>
-          <button onClick={ () => deleteMovie(movie.id) } >X</button>
-        </div>
-      </li>
-    )
-  ); // map soll das FORMAT eines Arrays in ein anderes Format umwandeln
+  render() {
 
-  // RENDERING => FILL DATA INTO HTML TEMPLATE
-  // JSX ONLY => no functions!!!!
-  return (
-    <div className="App">
-      <header className="App-header">
-        <h2>My Movie List</h2>
-        <ul id="movies">{ jsxMovies }</ul>
-        <button id="btn-add" onClick={ addMovie }>
-          ADD MOVIE
-        </button>
-      </header>
-    </div>
-  );
+    // CONVERT ARRAY OF MOVIES TO JSX
+    const jsxMovies = this.state.arrMovies.map((movie) => (
+      // map function always returns the UPDATED object
+        <li key={ movie.id }>
+          <span>{ movie.title }</span>
+          <div className="btn-actions">
+            <button onClick={ () => this.editMovie(movie.id) }>&#x270E;</button>
+            <button onClick={ () => this.deleteMovie(movie.id) } >X</button>
+          </div>
+        </li>
+      )
+    ); // map soll das FORMAT eines Arrays in ein anderes Format umwandeln
+
+    // RENDERING => FILL DATA INTO HTML TEMPLATE
+    // JSX ONLY => no functions!!!!
+    return (
+      <div className="App">
+        <header className="App-header">
+          <h2>My Movie List</h2>
+          <ul id="movies">{ jsxMovies }</ul>
+          <button id="btn-add" onClick={ this.addMovie }>
+            ADD MOVIE
+          </button>
+        </header>
+      </div>
+    );
+
+  }
+
 }
 
 export default App;

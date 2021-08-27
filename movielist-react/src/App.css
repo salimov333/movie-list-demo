@@ -29,16 +29,16 @@ ul#movies > li {
   justify-content: space-between;
 
   width: 400px;
-  margin: 3px 0;
+  margin: 10px 0;
   padding: 10px;
   border-radius: 10px;
-  border: 2px solid #aaa;
-  background-color: #ccc;
+  border: 2px solid #ccc;
+  background-color: #aaa;
   font-size: 1.3rem;
 }
 ul#movies > li:hover {
-  background-color: #aaa;
-  color: white;
+  background-color: #ccc;
+  color: mediumslateblue;
   font-weight: bold;
 }
 
@@ -50,4 +50,12 @@ button#btn-add {
   font-size: 1.2rem;
   color: white;
   cursor: pointer;
+}
+
+.btn-actions > button {
+  margin: 2px;  
+}
+
+.btn-actions > button:hover {
+  cursor: pointer;  
 }
