@@ -1,7 +1,7 @@
 import './App.css';
 import { Component } from 'react' // HOOKS import
 
-const log = console.log
+const log = console.log // ALIAS for that way to long "console.log" :)
 
 const API_URL = "http://localhost:4000/movies"
 
