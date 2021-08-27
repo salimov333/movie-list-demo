@@ -22,9 +22,8 @@ class App extends Component {
     fetch(API_URL)
     .then(response => response.json())
     .then(moviesApi => {
-      log( moviesApi )
 
-      // arrMovies = movies => DONT DO THIS SHIT!!!
+      log( moviesApi )
       this.setState( { arrMovies: moviesApi } ) // overwrite 
 
     })
@@ -44,15 +43,13 @@ class App extends Component {
     if (!movieTitleNew) return; // one movie titel nix los!
 
     // ERSTELLE NEUES MOVIE OBJEKT
-    // { title: "Happy" }
     const movieNew = {
       title: movieTitleNew,
-      //id: Date.now().toString() //=> 123564728191
-    }; // string => objekt
+    };
 
-    // API => STATE => DOM
+    // Sende neuen Movie an API!
     fetch(API_URL, {
-      method: "POST", // create NEW item at API
+      method: "POST", // POST = create NEW item at API
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify( movieNew )
     })
@@ -60,7 +57,7 @@ class App extends Component {
     // API CALL was SUCCESSFUL
     .then(movieNewApi => {
       
-      log(movieNewApi);
+      log(movieNewApi); // this is what the API created... it will have an ID!
 
       // FÜGE NEUES MOVIE OBJEKT DEM ARRAY HINZU
       const arrMoviesNew =  [...this.state.arrMovies, movieNewApi] // merge COPY des Original Array mit neuem Movie 
@@ -85,15 +82,11 @@ class App extends Component {
 
     if (!movieTitleNew) return; // ohne movie titel nix los!
 
-    // { title: "<title", id: 12345 }
-
-    // API updaten
-
+    // API update URL => ID anhängen!
     const apiUpdateURL = `${API_URL}/${idToEdit}`
-
     log( apiUpdateURL )
 
-    // UPDATE CHAIN: => API => STATE => DOM 
+    // UPDATE CHAIN: => API CALL => API RESPONSE WITH DATA => STATE UPDATE => DOM UPDATE 
 
     // UPDATE DATA IN API with PUT or PATCH
     fetch(apiUpdateURL, {
@@ -103,7 +96,7 @@ class App extends Component {
     })
     .then(response => response.json())
 
-    // API changes was successful!! => update STATE too => update DOM
+    // API changes was successful!! => update STATE too
     .then(movieUpdatedApi => {
       log( movieUpdatedApi )
 
@@ -125,15 +118,15 @@ class App extends Component {
 
     fetch(`${API_URL}/${idToDelete}`, {
       method: "DELETE"
-    }) // => http://localhost:4000/movies/:id 
+    }) // => URL: http://localhost:4000/movies/:id 
     .then(response => response.json())
     // API CALL successful => update local state
     .then(movieDeletedApi => {
+      
       log( movieDeletedApi )
 
-      // Use filter method to delete items
+      // Use filter method to delete item
       const arrMoviesKeep = this.state.arrMovies.filter((movie) => movie.id != idToDelete); // => item mit id "idToDelete" (=> 3) => filter mir das RAUS!
-      // arrMovies = arrMoviesKeep; // overwrite original array
       this.setState( { arrMovies: arrMoviesKeep } ) // update STATE => that triggers DOM update
 
     })
